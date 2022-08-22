@@ -55,7 +55,7 @@ jobs:
         ls -lart
         zip -r src.zip src/
         sleep 60
-        curl -v "http://apigee:8080/v1/emulator/deploy?environment=local" -H 'Content-Type: zip' --data-binary "@src.zip"
-        curl http://apigee:8080/v1/emulator/tree
-        curl http://apigee:8998/api/v1/entries
+        curl -v "http://localhost:8080/v1/emulator/deploy?environment=local" -H 'Content-Type: zip' --data-binary "@src.zip"
+        curl http://localhost:8080/v1/emulator/tree
+        curl http://localhost:8998/api/v1/entries
     
