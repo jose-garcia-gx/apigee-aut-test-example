@@ -55,12 +55,12 @@ jobs:
         ls -lart
         zip -r src.zip src/
         sleep 30
-        curl -v "http://localhost:8080/v1/emulator/deploy?environment=local" -H 'Content-Type: zip' --data-binary "@src.zip" >> results.txt
-        curl http://localhost:8080/v1/emulator/tree >> results.txt
-        curl http://localhost:8998/api/v1/entries >> results.txt
+        curl -v "http://localhost:8080/v1/emulator/deploy?environment=local" -H 'Content-Type: zip' --data-binary "@src.zip" >> results2.txt
+        curl http://localhost:8080/v1/emulator/tree >> results2.txt
+        curl http://localhost:8998/api/v1/entries >> results2.txt
     - name: Upload Artifact
       uses: actions/upload-artifact@v1
       with:
-        name: results.txt
-        path: results.txt
+        name: results2.txt
+        path: results2.txt
     
