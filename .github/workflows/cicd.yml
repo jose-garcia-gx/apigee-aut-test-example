@@ -42,6 +42,7 @@ jobs:
 
     services:
       apigee:
+        name: apigee
         image: gcr.io/apigee-release/hybrid/apigee-emulator:1.6.1
         ports: ["8080:8080", "8998:8998"]
 
