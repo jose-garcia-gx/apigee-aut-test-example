@@ -1,0 +1,10 @@
+[
+  {
+    "entries": {
+      "sample_key_0": "sample_value_0"
+    },
+    "scope": "environment",
+    "environment": "local",
+    "name": "test-local"
+  }
+]

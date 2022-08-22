@@ -1,0 +1,59 @@
+name: 'Apigee cicd'
+
+on:
+  push:
+    branches:
+      - feat/*
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  quality:
+    name: 'Quality gate'
+    runs-on: ubuntu-latest
+    #if: github.event_name == 'pull_request'
+
+    steps:
+    - name: SCM
+      uses: actions/checkout@v3
+    
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    
+    - name: run apigeelint
+      run: |
+        npm install -g apigeelint
+        cd src/main/apigee/apiproxies
+        ls -d */ | awk '{print $NF}' | xargs -n1 sh -c 'cd "$0"/apiproxy && apigeelint -s . -f table.js >> ../../results.txt' || true
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: results.txt
+        path: src/main/apigee/apiproxies/results.txt
+
+  local-test:
+    runs-on: ubuntu-latest
+    depends-on: quality
+    #if: github.event_name == 'pull_request'
+
+    services:
+      apigee:
+        image: gcr.io/apigee-release/hybrid/apigee-emulator:1.6.1
+        ports: ["8080:8080", "8998:8998"]
+
+    steps:
+    - name: SCM
+      uses: actions/checkout@v3
+
+    - name: Local deploy / test
+      run:
+        sudo apt-get install curl zip jq -y
+        ls -lart
+        zip -r src.zip src/
+        curl -v http://apigee:8080/v1/emulator/deploy?environment=local -H 'Content-Type: zip' --data-binary "@src.zip"
+        curl http://apigee:8080/v1/emulator/tree
+        curl http://apigee:8998/api/v1/entries
+    
