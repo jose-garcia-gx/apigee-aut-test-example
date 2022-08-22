@@ -36,7 +36,8 @@ jobs:
 
   local-test:
     runs-on: ubuntu-latest
-    depends-on: quality
+    needs: 
+      - quality
     #if: github.event_name == 'pull_request'
 
     services:
