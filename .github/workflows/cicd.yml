@@ -54,6 +54,7 @@ jobs:
         sudo apt-get install curl zip jq -y
         ls -lart
         zip -r src.zip src/
+        sleep 60
         curl -v "http://apigee:8080/v1/emulator/deploy?environment=local" -H 'Content-Type: zip' --data-binary "@src.zip"
         curl http://apigee:8080/v1/emulator/tree
         curl http://apigee:8998/api/v1/entries
